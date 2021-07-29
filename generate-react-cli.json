@@ -1,0 +1,33 @@
+{
+  "usesTypeScript": false,
+  "usesCssModule": false,
+  "cssPreprocessor": "css",
+  "testLibrary": "Testing Library",
+  "component": {
+    "default": {
+      "path": "src/App/components",
+      "withStyle": false,
+      "withTest": true,
+      "withStory": false,
+      "withLazy": false
+    },
+    "class": {
+      "path": "src/App/components",
+      "withTest": false,
+      "withStyle": true,
+      "customTemplates": {
+        "component": "grc_templates/classComponent/TemplateName.js",
+        "style": "grc_templates/classComponent/TemplateName.style.js"
+      }
+    },
+    "function": {
+      "path": "src/App/components",
+      "withTest": false,
+      "withStyle": true,
+      "customTemplates": {
+        "component": "grc_templates/functionComponent/TemplateName.js",
+        "style": "grc_templates/functionComponent/TemplateName.style.js"
+      }
+    }
+  }
+}

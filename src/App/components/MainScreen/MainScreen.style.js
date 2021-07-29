@@ -6,6 +6,11 @@ export default StyleSheet.create({
     // backgroundColor:'grey',
     marginTop: -15,
   },
+  buttonContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    paddingVertical: 40,
+  },
   button: {
     width: 48,
     height: 48,

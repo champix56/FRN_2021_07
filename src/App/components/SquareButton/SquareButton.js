@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Text, TouchableHighlight} from 'react-native';
 import styles from './SquareButton.style';
 const SquareButton = props => {
-  console.log(props);
+ // console.log(props);
   return (
     <TouchableHighlight
       onPress={props.onPress}

@@ -4,10 +4,11 @@ export const navInitialState = {screen: null};
 export const productsInitialState = {
   products: [],
   current: {
-    name: '',
-    prix: 0,
-    img: '',
-    description: '',
+    name: 'titre',
+    prix: 10,
+    img: 'http://',
+    description:
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
   },
 };
 function productsReducer(state = productsInitialState, action) {
@@ -16,11 +17,52 @@ function productsReducer(state = productsInitialState, action) {
       return {...state, products: [...state.products, action.value]};
     case 'ADD_PRODUCTS':
       return {...state, products: action.values};
-    case 'SAVE_NEW_CURRENT':
+    case 'SET_CURRENT':
+      return {...state, current: action.value};
+    case 'SAVE_CURRENT':
+      fetch(
+        `http://desorbaix.alexandre.free.fr/phpRest/products${
+          state.current.id ? '/' + state.current.id : ''
+        }`,
+        {
+          method: state.current.id ? 'PUT' : 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.parse(state.current),
+        },
+      )
+        .then(f => {
+          // console.log(f);
+          return f.json();
+        })
+        .then(o => {
+          if (undefined !== state.current.id) {
+            store.dispatch({type: 'LOCAL_SAVE_NEW', value: o});
+          } else {
+            store.dispatch({type: 'LOCAL_UPDATE', value: o});
+          }
+          store.dispatch({
+            type: 'SET_CURRENT',
+            value: productsInitialState.current,
+          });
+        });
+      return state;
+    case 'LOCAL_SAVE_NEW':
       return {
         ...state,
-        products: [...state.products, state.current],
-        current: productsInitialState.current,
+        products: [...state.products, action.value],
+      };
+    case 'LOCAL_UPDATE':
+      const i = state.products.findIndex(e => e.id === action.value.id);
+      return {
+        ...state,
+        products: [
+          ...state.products.slice(0, i),
+          action.value,
+          ...state.products.slice(i + 1),
+        ],
       };
     case 'INIT_PRODUCT_LIST':
       fetch('http://desorbaix.alexandre.free.fr/phpRest/products/')

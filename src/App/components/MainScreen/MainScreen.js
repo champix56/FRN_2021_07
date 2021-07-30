@@ -6,6 +6,8 @@ import {displayName as name} from '../../../../app.json';
 import styles from './MainScreen.style';
 import SquareButton from '../SquareButton/SquareButton';
 import FormProduct from '../FormProduct/FormProduct';
+import store from '../../store/store';
+import ListProducts from '../ListProducts/ListProducts';
 class MainScreen extends Component {
   constructor(props) {
     super(props);
@@ -24,14 +26,14 @@ class MainScreen extends Component {
           <SquareButton
             text="Nouveau"
             onPress={e => {
-              this.props.onScreenSelection(<FormProduct />);
+              store.dispatch({type: 'SET_SCREEN', value: <FormProduct />});
             }}>
             <Image source={{uri: IMG_FORM}} style={styles.button} />
           </SquareButton>
           <SquareButton
-            text="n2"
+            text="produits"
             onPress={e => {
-              console.log(e);
+              store.dispatch({type: 'SET_SCREEN', value: <ListProducts />});
             }}>
             <Image source={{uri: IMG_CART}} style={styles.button} />
           </SquareButton>
@@ -41,6 +43,6 @@ class MainScreen extends Component {
   }
 }
 MainScreen.propTypes = {
-  onScreenSelection: PropTypes.func.isRequired,
+  //onScreenSelection: PropTypes.func.isRequired,
 };
 export default MainScreen;

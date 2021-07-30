@@ -1,0 +1,11 @@
+{
+  "products": [
+    {
+      "id": 0,
+      "title": "Menhir en chocolat",
+      "price": 3.5,
+      "img": "https://www.chocolatleroux.com/671-full_default/le-petit-menhir-garnis-chocolat-noir.jpg",
+      "description": "Chocolat en forme de menhir. le péché mignon d'obelix"
+    }
+  ]
+}

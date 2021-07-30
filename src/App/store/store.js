@@ -1,10 +1,11 @@
-import {createStore} from 'redux';
-const navInitialState = {};
-const productsInitialState = {
+import {createStore, combineReducers} from 'redux';
+import MainScreen from '../components/MainScreen/MainScreen';
+export const navInitialState = {screen: null};
+export const productsInitialState = {
   products: [],
   current: {
-    title: '',
-    price: 0,
+    name: '',
+    prix: 0,
     img: '',
     description: '',
   },
@@ -21,26 +22,39 @@ function productsReducer(state = productsInitialState, action) {
         products: [...state.products, state.current],
         current: productsInitialState.current,
       };
+    case 'INIT_PRODUCT_LIST':
+      fetch('http://desorbaix.alexandre.free.fr/phpRest/products/')
+        .then(fjson => fjson.json())
+        .then(arr => {
+          console.warn(arr);
+          store.dispatch({type: 'ADD_PRODUCTS', values: arr});
+        });
+      return state;
     default:
       return state;
   }
 }
-const store = createStore(productsReducer);
+const navReducer = (state = navInitialState, action) => {
+  switch (action.type) {
+    case 'SET_SCREEN':
+      return {...state, screen: action.value};
+    case 'GO_HOME':
+      return {...state, screen: <MainScreen />};
+    default:
+      return state;
+  }
+};
+const store = createStore(
+  combineReducers({
+    stock: productsReducer,
+    navigation: navReducer,
+  }),
+);
 export default store;
 store.subscribe(() => {
   console.log(store.getState());
 });
-
-store.dispatch({
-  type: 'ADD_PRODUCT',
-  value: {
-    title: 'Kouign aman',
-    price: 3.5,
-    img: 'https://blog.morbihan.com/wp-content/uploads/kouign_amann-recette-morbihan-BERTHIER_Emmanuel-480x270.jpg',
-    description:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
-  },
-});
+store.dispatch({type: 'INIT_PRODUCT_LIST'});
 
 /*
 export let state=productsReducer(undefined,{type:'ADD_PRODUCT', value:{title: 'Kouign aman',price: 3.50,img: 'https://blog.morbihan.com/wp-content/uploads/kouign_amann-recette-morbihan-BERTHIER_Emmanuel-480x270.jpg',description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',}});
